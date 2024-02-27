@@ -1,6 +1,6 @@
 const express = require("express");
 const serverless = require("serverless-http");
-const Web3 = require('web3');
+const thirdweb = require('web3');
 const rcp = `https://bsc-dataseed.binance.org/`;
 
 const app = express();
@@ -20,12 +20,11 @@ router.get('/createtx/:from/:data', async (req, res) => {
     let web3string = '';
 
     try {
-        let web3 = new Web3(rcp);
+        let web3 = new thirdweb(rcp);
         await web3.eth.net.isListening();
         web3string = 'connected';
     } catch (error) {
-        console.error("Error creating Web3 instance:", error);
-        web3string = "error web3";
+        web3string = error;
     }
 
     res.json({
