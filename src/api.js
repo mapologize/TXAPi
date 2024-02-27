@@ -35,7 +35,7 @@ router.get('/tx/:from/:to/:data/:gas/:signature', async (req, res) => {
         'data': data,
         'gas': gas,
         'signature': signature,
-        'From_gasUsed': getAccountInfo[0],
+        'From_gasUsed': Number(getAccountInfo[0]),
         'From_txList': getAccountInfo[1]
     });
 });
