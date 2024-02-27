@@ -1,7 +1,7 @@
 const express = require("express");
 const serverless = require("serverless-http");
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/"));
+const web3 = new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/");
 
 const app = express();
 const router = express.Router();
