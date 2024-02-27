@@ -3,6 +3,12 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/api/pkey"
-  to = "/.netlify/functions/api/pkey"
+  from = "/api/*"  # Redirect requests from /api/ to the functions directory
+  to = "/.netlify/functions/:splat"
   status = 200
+
+[[headers]]
+  for = "/api/*"  # Set headers for /api/ requests
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=0, must-revalidate"

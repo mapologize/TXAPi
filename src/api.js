@@ -16,7 +16,7 @@ router.get('/pkey', (req,res) => {
     //res.setHeader('Access-Control-Allow-Origin', 'https://moomooh.io');
     //res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
     res.json({
-        'Hello!': 'welcome to PKEY'
+        'Hello!': 'welcome to PKEY is' + process.env.PRIVATE_KEY
     });
 });
 
