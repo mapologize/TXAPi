@@ -1,7 +1,6 @@
 const express = require('express');
 const serverless = require('serverless-http');
-
-import Web3 from 'web3';
+const Web3 = require('web3');
 
 const app = express();
 const router = express.Router();
