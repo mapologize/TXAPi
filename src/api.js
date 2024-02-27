@@ -30,7 +30,7 @@ router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
     //
     const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
     const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
-    const gasUsed = 123456;
+    const gasUsed = 10000000;
     //
     let gasConsume = -1;
     try{
