@@ -33,7 +33,8 @@ router.get('/tx/:from/:to/:data/:signature', async (req, res) => {
         'from': from,
         'from': to,
         'data': data,
-        'signature': signature
+        'signature': signature,
+        'getAccountInfo': getAccountInfo[1]
     });
 });
 
