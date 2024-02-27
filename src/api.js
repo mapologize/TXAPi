@@ -24,13 +24,12 @@ router.get('/', (req,res) => {
 router.get('/tx/:from/:to/:data/:signature', async (req, res) => {
     const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
     const getAllowanedContract = await validateApi.methods.getAllowanedContract().call();
-    console.log(getAllowanedContract);
     res.json({
         'from': req.params.from,
         'from': req.params.to,
         'data': req.params.data,
-        'signature': req.params.signature
-        //'ca': validateApi
+        'signature': req.params.signature,
+        'getAllowanedContract': getAllowanedContract
     });
 });
 
