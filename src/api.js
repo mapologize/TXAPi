@@ -13,12 +13,25 @@ router.get('/', (req,res) => {
     });
 });
 
-router.get('/pkey', (req,res) => {
-    const web3 = new Web3(`https://bsc-dataseed.binance.org/`);
-    res.json({
-        'Hello!': 'welcome to PKEY is ' + PKEY,
-        'Web3' : web3
-    });
+router.get('/pkey', async (req, res) => {
+    try {
+        const web3 = new Web3('https://bsc-dataseed.binance.org/');
+        const networkId = await web3.eth.net.getId();
+        const accounts = await web3.eth.getAccounts();
+
+        res.json({
+            'Hello!': 'Welcome to PKEY',
+            'PKEY': PKEY,
+            'Web3': {
+                version: web3.version,
+                networkId: networkId,
+                accounts: accounts
+            }
+        });
+    } catch (error) {
+        console.error('Error in /pkey route:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 app.use('/.netlify/functions/api', router);
