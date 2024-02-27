@@ -23,13 +23,17 @@ router.get('/', (req,res) => {
 
 router.get('/tx/:from/:to/:data/:signature', async (req, res) => {
     const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
-    res.json({
+
+    const response = {
         'from': req.params.from,
-        'from': req.params.to,
+        'to': req.params.to,
         'data': req.params.data,
         'signature': req.params.signature,
         'ca': validateApi
-    });
+    };
+
+    const convertedResponse = JSON.parse(JSON.stringify(response));
+    res.json(convertedResponse);
 });
 
 app.use('/.netlify/functions/api', router);
