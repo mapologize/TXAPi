@@ -21,22 +21,31 @@ router.get('/', (req,res) => {
     });
 });
 
-router.get('/tx/:from/:to/:data/:gas/:signature', async (req, res) => {
+router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
     const from = req.params.from;
     const to = req.params.to;
     const data = req.params.data;
-    const gas = req.params.gas;
+    const value = req.params.value;
     const signature = req.params.signature;
+    //
     const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
     const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
+    const gasUsed = 123456;
+    //
+    let gasConsume = -1;
+    try{
+        gasConsume = await validateApi.methods.excuteTransaction(from,to,data,gasUsed).estimateGas({ from: from, value: value });
+    }catch{}
+    //
     res.json({
         'from': from,
         'to': to,
         'data': data,
-        'gas': Number(gas),
+        'value': value,
         'signature': signature,
         'From_gasUsed': Number(getAccountInfo[0]),
-        'From_txList': getAccountInfo[1]
+        'From_txList': getAccountInfo[1],
+        'gasUsed': Number(gasUsed)
     });
 });
 
