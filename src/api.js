@@ -18,12 +18,16 @@ router.get('/createtx/:from/:data', async (req, res) => {
     const from = req.params.from;
     const data = req.params.data;
     let web3string = '';
-    try{
+
+    try {
         let web3 = new Web3(rcp);
-        web3string = web3;
-    }catch{
+        await web3.eth.net.isListening();
+        web3string = 'connected';
+    } catch (error) {
+        console.error("Error creating Web3 instance:", error);
         web3string = "error web3";
     }
+
     res.json({
         'from': from,
         'data': data,
