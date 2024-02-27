@@ -22,14 +22,18 @@ router.get('/', (req,res) => {
 });
 
 router.get('/tx/:from/:to/:data/:signature', async (req, res) => {
+    const from = req.params.from;
+    const to = req.params.to;
+    const data = req.params.data;
+    const signature = req.params.signature;
     const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
-    const getAllowanedContract = await validateApi.methods.getAllowanedContract().call();
+    const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
     res.json({
-        'from': req.params.from,
-        'from': req.params.to,
-        'data': req.params.data,
-        'signature': req.params.signature,
-        'getAllowanedContract': getAllowanedContract
+        'from': from,
+        'from': to,
+        'data': data,
+        'signature': signature,
+        'getAccountInfo': getAccountInfo
     });
 });
 
