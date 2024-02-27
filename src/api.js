@@ -20,11 +20,11 @@ router.get('/createtx/:from/:data', async (req, res) => {
     let web3string = '';
 
     try {
-        let web3 = new thirdweb(rcp);
+        let web3 = new thirdweb.Web3(rcp);
         await web3.eth.net.isListening();
         web3string = 'connected';
     } catch (error) {
-        web3string = error;
+        web3string = 'error:' + error;
     }
 
     res.json({
