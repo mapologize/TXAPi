@@ -6,6 +6,7 @@ const rcp = `https://bsc-dataseed.binance.org/`;
 const app = express();
 const router = express.Router();
 
+const web3 = new thirdweb.Web3(rcp);
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 
 router.get('/', (req,res) => {
@@ -20,9 +21,8 @@ router.get('/createtx/:from/:data', async (req, res) => {
     let web3string = '';
 
     try {
-        let web3 = new thirdweb.Web3(rcp);
-        await web3.eth.net.isListening();
-        web3string = 'connected';
+        const net = await web3.eth.net.isListening();
+        web3string = 'connected:' + net;
     } catch (error) {
         web3string = 'error:' + error;
     }
