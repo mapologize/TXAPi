@@ -12,6 +12,14 @@ router.get('/', (req,res) => {
     });
 });
 
+router.get('/pkey', (req,res) => {
+    //res.setHeader('Access-Control-Allow-Origin', 'https://moomooh.io');
+    //res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.json({
+        'Hello!': 'welcome to PKEY'
+    });
+});
+
 app.use('/.netlify/functions/api', router);
 
 module.exports = app;

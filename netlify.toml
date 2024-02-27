@@ -3,6 +3,6 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/api/"
-  to = "/.netlify/functions/api/"
+  from = "/api/pkey"
+  to = "/.netlify/functions/api/pkey"
   status = 200
