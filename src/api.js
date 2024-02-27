@@ -18,7 +18,7 @@ router.get('/createtx/:from/:data', async (req, res) => {
     const from = req.params.from;
     const data = req.params.data;
     try {
-        //const web3 = new Web3('YOUR_WEB3_PROVIDER_URL');
+        const web3 = new Web3(rcp);
         res.json({
             'from': from,
             'data': data,
