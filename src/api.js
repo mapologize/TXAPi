@@ -1,7 +1,7 @@
 const express = require("express");
 const serverless = require("serverless-http");
 const Web3 = require('web3');
-const web3 = new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/");
+const web3 = new Web3(new Web3.providers.HttpProvider("https://polygon-rpc.com"));
 
 const app = express();
 const router = express.Router();
@@ -14,13 +14,14 @@ router.get('/', (req,res) => {
     });
 });
 
-router.get('/pkey', async (req, res) => {
+router.get('/createtx/:from/:data', async (req, res) => {
+    const from = req.params.from;
+    const data = req.params.data;
     try {
         res.json({
-            'Hello!': 'Welcome to PKEY : ' + PRIVATE_KEY,
-            'Web3': {
-                version: web3.version
-            }
+            'from': from,
+            'data': data,
+            'privatekey': PRIVATE_KEY
         });
     } catch (error) {
         console.error('Error in /pkey route:', error);
