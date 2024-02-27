@@ -1,12 +1,12 @@
-const express = require('express');
-const serverless = require('serverless-http');
+const express = require("express");
+const serverless = require("serverless-http");
 const Web3 = require('web3');
+const web3 = new Web3(new Web3.providers.HttpProvider("https://bsc-dataseed.binance.org/"));
 
 const app = express();
 const router = express.Router();
 
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const BSC_NODE_URL = 'https://bsc-dataseed.binance.org/';
 
 router.get('/', (req,res) => {
     res.json({
@@ -16,8 +16,6 @@ router.get('/', (req,res) => {
 
 router.get('/pkey', async (req, res) => {
     try {
-
-        const web3 = new Web3(BSC_NODE_URL);
         res.json({
             'Hello!': 'Welcome to PKEY : ' + PRIVATE_KEY,
             'Web3': {
