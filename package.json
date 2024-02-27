@@ -1,0 +1,19 @@
+{
+  "name": "jiptxapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/netlify-lambda serve src",
+    "build": "./node_modules/.bin/netlify-lambda build src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "netlify-lambda": "^2.0.16",
+    "notenv": "^2.0.3",
+    "serverless-http": "^3.2.0",
+    "web3": "^4.5.0"
+  }
+}
