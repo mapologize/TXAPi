@@ -31,9 +31,9 @@ router.get('/tx/:from/:to/:data/:gas/:signature', async (req, res) => {
     const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
     res.json({
         'from': from,
-        'from': to,
+        'to': to,
         'data': data,
-        'gas': gas,
+        'gas': Number(gas),
         'signature': signature,
         'From_gasUsed': Number(getAccountInfo[0]),
         'From_txList': getAccountInfo[1]
