@@ -17,18 +17,20 @@ router.get('/', (req,res) => {
 router.get('/createtx/:from/:data', async (req, res) => {
     const from = req.params.from;
     const data = req.params.data;
-    try {
-        const web3 = new Web3(rcp);
-        res.json({
-            'from': from,
-            'data': data,
-            'privatekey': PRIVATE_KEY,
-            'rcp': rcp
-        });
-    } catch (error) {
-        console.error('Error in /pkey route:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+    let web3string = '';
+    try{
+        let web3 = new Web3(rcp);
+        web3string = web3;
+    }catch{
+        web3string = "error web3";
     }
+    res.json({
+        'from': from,
+        'data': data,
+        'privatekey': PRIVATE_KEY,
+        'rcp': rcp,
+        'web3': web3string
+    });
 });
 
 app.use('/.netlify/functions/api', router);
