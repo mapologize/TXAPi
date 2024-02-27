@@ -14,15 +14,11 @@ router.get('/', (req,res) => {
 router.get('/pkey', async (req, res) => {
     try {
         const web3 = new Web3('https://bsc-dataseed.binance.org/');
-        const networkId = await web3.eth.net.getId();
         const PKEY = process.env.PRIVATE_KEY;
 
         res.json({
             'Hello!': 'Welcome to PKEY',
-            'PKEY': PKEY,
-            'Web3': {
-                networkId: networkId
-            }
+            'PKEY': PKEY
         });
     } catch (error) {
         console.error('Error in /pkey route:', error);
