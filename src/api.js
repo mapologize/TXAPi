@@ -28,12 +28,12 @@ router.get('/tx/:from/:to/:data/:signature', async (req, res) => {
     const signature = req.params.signature;
     const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
     const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
+    console.log(getAccountInfo);
     res.json({
         'from': from,
         'from': to,
         'data': data,
-        'signature': signature,
-        'getAccountInfo': [getAccountInfo[0],getAccountInfo[1]]
+        'signature': signature
     });
 });
 
