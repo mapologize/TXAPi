@@ -24,7 +24,7 @@ router.get('/', (req,res) => {
 });
 
 router.get('/tx/:from/:to/:data/:signature', async (req, res) => {
-    const validateApi = await new provider.jib.web3.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
+    const validateApi = new provider.jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
     res.json({
         'from': req.params.from,
         'from': req.params.to,
