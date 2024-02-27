@@ -37,16 +37,20 @@ router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
         gasConsume = await validateApi.methods.excuteTransaction(from,to,data,gasUsed).estimateGas({ from: from, value: value });
     }catch{}
     //
-    res.json({
-        'from': from,
-        'to': to,
-        'data': data,
-        'value': value,
-        'signature': signature,
-        'From_gasUsed': Number(getAccountInfo[0]),
-        'From_txList': getAccountInfo[1],
-        'gasConsume': Number(gasConsume)
-    });
+    if(gasConsume>0){
+        res.json({
+            'from': from,
+            'to': to,
+            'data': data,
+            'value': value,
+            'signature': signature,
+            'From_gasUsed': Number(getAccountInfo[0]),
+            'From_txList': getAccountInfo[1],
+            'gasConsume': Number(gasConsume)
+        });
+    }else{
+        res.json({'error': 'excute error'});
+    }
 });
 
 app.use('/.netlify/functions/api', router);
