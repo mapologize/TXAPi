@@ -39,10 +39,11 @@ async function signMessage() {
     const account = await web3wallet.getCurrentAccount();
     const validateApi = await jibChain.contract(VALIDATEAPI.address,VALIDATEAPI.abi);
     const getAccountTxList = await validateApi.methods.getAccountTxList(account).call();
-    const message = `Account: ${account} Nonce: ${getAccountTxList.length}`;
+    console.log(getAccountTxList);
+    /*const message = `Account: ${account} Nonce: ${getAccountTxList.length}`;
     await web3.eth.personal.sign(message, account, '')
     .then(signature => { console.log('Signature:', signature); })
-    .catch(error => { console.error('Error:', error); });
+    .catch(error => { console.error('Error:', error); });*/
 }
 
 async function update() {
