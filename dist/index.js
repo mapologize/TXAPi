@@ -43,7 +43,7 @@ async function signMessage() {
     })
     .then(async result => {
         console.log(result);
-        const message = result.message;
+        const message = result.getMessageHash;
         await web3.eth.personal.sign(message, account, '')
         .then(signature => { console.log('Signature:', signature); })
         .catch(error => { console.error('Error:', error); });
