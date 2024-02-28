@@ -35,7 +35,38 @@ window.onload = async function () {
 
 async function signMessage() {
     const account = await web3wallet.getCurrentAccount();
-    const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/getnonce/${account}`;
+    const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/accountInfo/${account}`;
+    await fetch(fetchLink)
+    .then(response => {
+        if (!response.ok) { throw new Error(`Network response was not ok: ${response.statusText}`); }
+        return response.json();
+    })
+    .then(async result => {
+        const tx = {
+            "description":'test des',
+            "from": account,
+            "to":'0x0b63b7dd7f54d7b17f01d197d3c0f239f12543c7',
+            "data":'0x',
+            "value":'2000000000000',
+            "gasUsed":'720000',
+            "nonce": result.getAccountTxList.length
+        }
+        const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
+        await web3.eth.personal.sign(message, account, '')
+        .then(async signed => {
+            await createTx(tx,signed);
+        })
+        .catch(error => {
+            console.error('Error On Signed Transaction:', error);
+        });
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
+}
+
+async function createTx(tx,signed) {
+    const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/tx/${tx.from}/${tx.to}/${tx.data}/${tx.value}/${tx.gasUsed}/${signed}/${tx.description}`;
     await fetch(fetchLink)
     .then(response => {
         if (!response.ok) { throw new Error(`Network response was not ok: ${response.statusText}`); }
@@ -43,13 +74,9 @@ async function signMessage() {
     })
     .then(async result => {
         console.log(result);
-        const message = result.getMessageHash;
-        await web3.eth.personal.sign(message, account, '')
-        .then(signature => { console.log('Signature:', signature); })
-        .catch(error => { console.error('Error:', error); });
     })
     .catch(error => {
-        console.error('Error fetching data:', error);
+        console.error('Error create tx:', error);
     });
 }
 

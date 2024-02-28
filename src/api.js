@@ -19,56 +19,56 @@ const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.ad
 
 router.get('/', (req,res) => {
     res.json({
-        'Hello!': 'welcome to API'
+        'Ok!': 'welcome to API'
     });
 });
 
-router.get('/getnonce/:from', async (req, res) => {
-    const from = req.params.from;
-    try{
-        const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
-        const message = `Account=${from} Nonce=${getAccountInfo[1].length}`;
-        const getMessageHash = await validateApi.methods.getMessageHash(message).call();
-        res.json({
-            'from': from,
-            'currentGasUsed': Number(getAccountInfo[0]),
-            'currentNonce': Number(getAccountInfo[1].length),
-            'message': message,
-            'getMessageHash': getMessageHash
-        });
-    }catch{
-        res.json({'error': 'excute error'});
-    }
+router.get('/accountInfo/:account', async (req, res) => {
+    const account = req.params.account;
+    const getAccountInfo = await validateApi.methods.getAccountInfo(account).call();
+    res.json({
+        'getAccountGasUsed': Number(getAccountInfo[0]),
+        'getAccountTxList': getAccountInfo[1],
+    });
 });
 
-router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
+router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async (req, res) => {
     const from = req.params.from;
     const to = req.params.to;
     const data = req.params.data;
     const value = req.params.value;
+    const gasUsed = req.params.gasUsed;
     const signature = req.params.signature;
-    //
-    const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
-    const gasUsed = 10000000;
-    //
+    const description = req.params.description;
+
     let gasConsume = -1;
     try{
         gasConsume = await validateApi.methods.excuteTransaction(from,to,data,gasUsed).estimateGas({ from: from, value: value });
     }catch{}
-    //
+
     if(gasConsume>0){
+        const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
+        const nonce = Number(getAccountInfo[1].length);
+        const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
+        const getMessageHash = await validateApi.methods.getMessageHash(message).call();
+        const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
+        const recoverSigner = await validateApi.methods.recoverSigner(getEthSignedMessageHash,signature).call();
         res.json({
+            'description': description,
             'from': from,
             'to': to,
             'data': data,
             'value': value,
+            'gasUsed': gasUsed, 
+            'nonce': nonce,
             'signature': signature,
-            'From_gasUsed': Number(getAccountInfo[0]),
-            'From_txList': getAccountInfo[1],
+            'recoverSigner': recoverSigner,
             'gasConsume': Number(gasConsume)
         });
     }else{
-        res.json({'error': 'excute error'});
+        res.json({
+            'revert': 'excute function call error!'
+        });
     }
 });
 
