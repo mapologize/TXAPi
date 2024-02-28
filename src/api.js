@@ -23,7 +23,7 @@ router.get('/', (req,res) => {
     });
 });
 
-router.get('/getnonce/:from'), async (req, res) => {
+router.get('/getnonce/:from', async (req, res) => {
     const from = req.params.from;
     try{
         const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
@@ -39,7 +39,7 @@ router.get('/getnonce/:from'), async (req, res) => {
     }catch{
         res.json({'error': 'excute error'});
     }
-}
+});
 
 router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
     const from = req.params.from;
