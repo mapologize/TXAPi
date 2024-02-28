@@ -31,8 +31,8 @@ router.get('/getnonce/:from', async (req, res) => {
         const getMessageHash = await validateApi.methods.getMessageHash(message).call();
         res.json({
             'from': from,
-            //'currentGasUsed': Number(getAccountInfo[0]),
-            //'currentNonce': Number(getAccountInfo[1].length),
+            'currentGasUsed': Number(getAccountInfo[0]),
+            'currentNonce': Number(getAccountInfo[1].length),
             'message': message,
             'getMessageHash': getMessageHash
         });
