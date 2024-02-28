@@ -24,7 +24,7 @@ window.onload = async function () {
     if (connstatus == `connected`) {
         await connectWallet(`connectBTN`);
     } else {
-        //await update();
+        await update();
     }
 }
 
@@ -34,4 +34,8 @@ async function signMessage() {
     await web3.eth.personal.sign(message, account, '')
     .then(signature => { console.log('Signature:', signature); })
     .catch(error => { console.error('Error:', error); });
+}
+
+async function update() {
+    console.log("updated!");
 }

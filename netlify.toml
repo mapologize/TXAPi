@@ -3,7 +3,7 @@
   publish = "dist"
 
 [[redirects]]
-  from = "/api"
-  to = "/.netlify/functions/api/"
+  from = "https://testapijib.netlify.app/api/*"
+  to = "https://testapijib.netlify.app/.netlify/functions/api/:splat"
   status = 200
   force = true
