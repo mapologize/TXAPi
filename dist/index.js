@@ -51,7 +51,7 @@ async function signMessage() {
             "gasUsed":'720000',
             "nonce": result.getAccountTxList.length
         }
-        const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
+        const message = `{"description":"${tx.description}","from":"${tx.from}","to":"${tx.to}","data":"${tx.data}","value":${tx.value},"gasUsed":${tx.gasUsed},"nonce":${tx.nonce}}`
         await web3.eth.personal.sign(message, account, '')
         .then(async signed => {
             await createTx(tx,signed);
