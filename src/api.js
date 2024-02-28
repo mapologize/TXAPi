@@ -50,7 +50,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
         const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
         const nonce = Number(getAccountInfo[1].length);
         const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
-        const recoveredAddress = provider_jib.eth.accounts.recover(JSON.parse(message), signature);
+        const recoveredAddress = thirdweb.eth.accounts.recover(JSON.parse(message), signature);
         const getMessageHash = await validateApi.methods.getMessageHash(`${message}`).call();
         const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
         const recoverSigner = await validateApi.methods.recoverSigner(getEthSignedMessageHash,signature).call();

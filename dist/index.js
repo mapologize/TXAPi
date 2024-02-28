@@ -61,7 +61,7 @@ async function signMessage() {
         console.log(getMessageHash);
         const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
         console.log(getEthSignedMessageHash);
-        await web3.eth.personal.sign(`${getMessageHash}`, account, '')
+        await web3.eth.personal.sign(`${message}`, account, '')
         .then(async signed => {
             console.log(signed);
             await createTx(tx,signed);
