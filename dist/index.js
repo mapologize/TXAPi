@@ -1,8 +1,7 @@
 const web3wallet = new web3walletpack(bsc);
 const webutils = new webutilspack();
-const thirdweb = require('web3');
 
-const provider_jib = new thirdweb.Web3(`https://rpc-l1.jibchain.net`);
+const provider_jib = new Web3(`https://rpc-l1.jibchain.net`);
 
 const VALIDATEAPI = {
     address: '0xA6177AbcC7A2cac356C15aECDD177F7FeC8c082A',
