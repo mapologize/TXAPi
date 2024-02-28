@@ -15,11 +15,27 @@ const VALIDATEAPI = {
 
 const privateKey = process.env.PRIVATE_KEY;
 
+const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
+
 router.get('/', (req,res) => {
     res.json({
         'Hello!': 'welcome to API'
     });
 });
+
+router.get('/getnonce/:from'), async (req, res) => {
+    const from = req.params.from;
+    const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
+    const message = `Account=${from} Nonce=${getAccountInfo[1].length}`;
+    const getMessageHash = await validateApi.methods.getMessageHash(message).call();
+    res.json({
+        'from': from,
+        'currentGasUsed': Number(getAccountInfo[0]),
+        'currentNonce': Number(getAccountInfo[1].length),
+        'message': message,
+        'getMessageHash': getMessageHash
+    });
+}
 
 router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
     const from = req.params.from;
@@ -28,7 +44,6 @@ router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
     const value = req.params.value;
     const signature = req.params.signature;
     //
-    const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
     const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
     const gasUsed = 10000000;
     //
