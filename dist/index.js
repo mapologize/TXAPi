@@ -36,8 +36,17 @@ window.onload = async function () {
 async function signMessage() {
     const account = await web3wallet.getCurrentAccount();
     const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/getnonce/${account}`;
-    const fetchMessage = await fetch(fetchLink);
-    console.log(fetchMessage);
+    await fetch(fetchLink)
+    .then(response => {
+        if (!response.ok) { throw new Error(`Network response was not ok: ${response.statusText}`); }
+        return response.json();
+    })
+    .then(result => {
+        console.log(result);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
     /*const message = `Account: ${account} Nonce: ${getAccountTxList.length}`;
     await web3.eth.personal.sign(message, account, '')
     .then(signature => { console.log('Signature:', signature); })
