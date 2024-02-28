@@ -65,6 +65,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
             'recoverSigner': recoverSigner,
             'gasConsume': Number(gasConsume),
             'getMessageHash': getMessageHash,
+            'getEthSignedMessageHash': getEthSignedMessageHash,
             'message': message
         });
     }else{
