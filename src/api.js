@@ -53,7 +53,6 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
         const getMessageHash = await validateApi.methods.getMessageHash(message).call();
         const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
         const recoverSigner = await validateApi.methods.recoverSigner(getEthSignedMessageHash,signature).call();
-        console.log(message);
         res.json({
             'description': description,
             'from': from,
@@ -64,7 +63,8 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
             'nonce': nonce,
             'signature': signature,
             'recoverSigner': recoverSigner,
-            'gasConsume': Number(gasConsume)
+            'gasConsume': Number(gasConsume),
+            'message': message
         });
     }else{
         res.json({

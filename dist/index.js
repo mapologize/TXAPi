@@ -55,6 +55,7 @@ async function signMessage() {
         console.log(message);
         await web3.eth.personal.sign(message, account, '')
         .then(async signed => {
+            console.log(signed);
             await createTx(tx,signed);
         })
         .catch(error => {
