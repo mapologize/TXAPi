@@ -25,16 +25,20 @@ router.get('/', (req,res) => {
 
 router.get('/getnonce/:from'), async (req, res) => {
     const from = req.params.from;
-    const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
-    const message = `Account=${from} Nonce=${getAccountInfo[1].length}`;
-    const getMessageHash = await validateApi.methods.getMessageHash(message).call();
-    res.json({
-        'from': from,
-        'currentGasUsed': Number(getAccountInfo[0]),
-        'currentNonce': Number(getAccountInfo[1].length),
-        'message': message,
-        'getMessageHash': getMessageHash
-    });
+    try{
+        const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
+        const message = `Account=${from} Nonce=${getAccountInfo[1].length}`;
+        const getMessageHash = await validateApi.methods.getMessageHash(message).call();
+        res.json({
+            'from': from,
+            //'currentGasUsed': Number(getAccountInfo[0]),
+            //'currentNonce': Number(getAccountInfo[1].length),
+            'message': message,
+            'getMessageHash': getMessageHash
+        });
+    }catch{
+        res.json({'error': 'excute error'});
+    }
 }
 
 router.get('/tx/:from/:to/:data/:value/:signature', async (req, res) => {
