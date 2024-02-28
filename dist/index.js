@@ -53,7 +53,7 @@ async function signMessage() {
         }
         const message = `{"description":"${tx.description}","from":"${tx.from}","to":"${tx.to}","data":"${tx.data}","value":${tx.value},"gasUsed":${tx.gasUsed},"nonce":${tx.nonce}}`
         console.log(message);
-        await web3.eth.personal.sign(message, account, '')
+        await web3.eth.personal.sign(`${message}`, account, '')
         .then(async signed => {
             console.log(signed);
             await createTx(tx,signed);
