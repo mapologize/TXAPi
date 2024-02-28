@@ -50,9 +50,9 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
         const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
         const nonce = Number(getAccountInfo[1].length);
         const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
-        const getMessageHash = await validateApi.methods.getMessageHash(`${message}`).call();
+        const getMessageHash = await validateApi.methods.getMessageHash(message).call();
         const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
-        const recoverSigner = await validateApi.methods.recoverSigner(message,signature).call();
+        const recoverSigner = await validateApi.methods.recoverSigner(`${getMessageHash}`,signature).call();
         res.json({
             'description': description,
             'from': from,
