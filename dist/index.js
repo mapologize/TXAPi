@@ -41,16 +41,16 @@ async function signMessage() {
         if (!response.ok) { throw new Error(`Network response was not ok: ${response.statusText}`); }
         return response.json();
     })
-    .then(result => {
+    .then(async result => {
         console.log(result);
+        const message = result.message;
+        await web3.eth.personal.sign(message, account, '')
+        .then(signature => { console.log('Signature:', signature); })
+        .catch(error => { console.error('Error:', error); });
     })
     .catch(error => {
         console.error('Error fetching data:', error);
     });
-    /*const message = `Account: ${account} Nonce: ${getAccountTxList.length}`;
-    await web3.eth.personal.sign(message, account, '')
-    .then(signature => { console.log('Signature:', signature); })
-    .catch(error => { console.error('Error:', error); });*/
 }
 
 async function update() {
