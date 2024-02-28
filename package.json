@@ -2,7 +2,7 @@
   "name": "jiptxapi",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "api.js",
   "scripts": {
     "start": "./node_modules/.bin/netlify-lambda serve src",
     "build": "./node_modules/.bin/netlify-lambda build src"
