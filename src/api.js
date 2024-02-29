@@ -53,6 +53,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
         const getMessageHash = await validateApi.methods.getMessageHash(message).call();
         const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
         const recoverSigner = await validateApi.methods.recoverSigner(`${getEthSignedMessageHash}`,signature).call();
+        const recovered = thirdweb.eth.accounts.recover(message,signature);
         res.json({
             'description': description,
             'from': from,
@@ -67,6 +68,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
             'getMessageHash': getMessageHash,
             'getEthSignedMessageHash': getEthSignedMessageHash,
             'message': message,
+            'recovered': recovered
         });
     }else{
         res.json({
