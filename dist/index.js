@@ -57,15 +57,9 @@ async function signMessage() {
         }
         const message = `{"description":"${tx.description}","from":"${tx.from}","to":"${tx.to}","data":"${tx.data}","value":${tx.value},"gasUsed":${tx.gasUsed},"nonce":${tx.nonce}}`
         console.log(message);
-        const getMessageHash = await validateApi.methods.getMessageHash(`${message}`).call();
-        console.log(getMessageHash);
-        const getEthSignedMessageHash = await validateApi.methods.getEthSignedMessageHash(getMessageHash).call();
-        console.log(getEthSignedMessageHash);
         await web3.eth.personal.sign(`${message}`, account, '')
         .then(async signed => {
-            const recovered = await web3.eth.accounts.recover(message,signed);
             console.log(signed);
-            console.log(recovered);
             await createTx(tx,signed);
         })
         .catch(error => {
