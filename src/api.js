@@ -62,27 +62,19 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             };
-            const signedTx = await thirdweb.eth.accounts.signTransaction(tx, privateKey);
-            res.json({'signedTx': `${signedTx}`});
-            /*thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction)
-            .on('transactionHash', receipt => {
-                res.json({'TxHash Success': receipt});
-            })
-            .on('error', error => {
-                res.json({'TxHash Error': error});
-            });
-            /*const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
+            const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
             await signPromise.then((signedTx) => {
-                const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
+                res.json('TxHash test success');
+                /*const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
                 sentTx.on("receipt", receipt => {
                     res.json({'TxHash Success': receipt});
                 });
                 sentTx.on("error", error => {
                     res.json({'TxHash Error': error});
-                });
+                });*/
             }).catch((error) => {
                 res.json({'TxHash Crash': error});
-            });*/
+            });
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
