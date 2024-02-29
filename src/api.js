@@ -4,7 +4,7 @@ const thirdweb = require('web3');
 
 const app = express();
 const router = express.Router();
-//comment
+
 const provider_bsc = new thirdweb.Web3(`https://bsc-dataseed.binance.org/`);
 const provider_jib = new thirdweb.Web3(`https://rpc-l1.jibchain.net`);
 
@@ -78,17 +78,17 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
                     const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
                     sentTx.on("receipt", receipt => {
                         res.json({
-                            'txHash': receipt
+                            'TxHash Success': receipt
                         });
                     });
                     sentTx.on("error", err => {
                         res.json({
-                            'txHash': err
+                            'TxHash Error': err
                         });
                     });
                 }).catch((err) => {
                     res.json({
-                        'txHash': err
+                        'TxHash Crash': err
                     });
                 });
         }else{
