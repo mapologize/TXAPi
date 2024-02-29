@@ -80,24 +80,21 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
                         res.json({
                             'TxHash Success': receipt,
                             'signPromise': signPromise,
-                            'privateKey': privateKey,
-                            'tx': tx
+                            'privateKey': privateKey
                         });
                     });
                     sentTx.on("error", error => {
                         res.json({
                             'TxHash Error': error,
                             'signPromise': signPromise,
-                            'privateKey': privateKey,
-                            'tx': tx
+                            'privateKey': privateKey
                         });
                     });
                 }).catch((error) => {
                     res.json({
                         'TxHash Crash': error,
                         'signPromise': signPromise,
-                        'privateKey': privateKey,
-                        'tx': tx
+                        'privateKey': privateKey
                     });
                 });
         }else{
