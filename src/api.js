@@ -32,12 +32,13 @@ router.get('/accountInfo/:account', async (req, res) => {
     });
 });
 
-router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async (req, res) => {
+router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:description', async (req, res) => {
     const from = req.params.from;
     const to = req.params.to;
     const data = req.params.data;
     const value = req.params.value;
     const gasUsed = req.params.gasUsed;
+    const gasPrice = req.params.gasPrice;
     const signature = req.params.signature;
     const description = req.params.description;
 
@@ -69,31 +70,23 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
             const tx = {
                 from: from,
                 gas: txGas,
+                gasPrice: gasPrice,
                 to: VALIDATEAPI.address,
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             };
             const signPromise = await thirdweb.eth.accounts.signTransaction(tx,privateKey);
-            res.json({
-                'signPromise': `${signPromise}`
-            });/*
-                await signPromise.then((signedTx) => {
-                    const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
-                    sentTx.on("receipt", receipt => {
-                        res.json({
-                            'TxHash Success': receipt
-                        });
-                    });
-                    sentTx.on("error", error => {
-                        res.json({
-                            'TxHash Error': error
-                        });
-                    });
-                }).catch((error) => {
-                    res.json({
-                        'TxHash Crash': error
-                    });
-                });*/
+            await signPromise.then((signedTx) => {
+                const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
+                sentTx.on("receipt", receipt => {
+                    res.json({'TxHash Success': receipt});
+                });
+                sentTx.on("error", error => {
+                    res.json({'TxHash Error': error});
+                });
+            }).catch((error) => {
+                res.json({'TxHash Crash': error});
+            });
         }else{
             res.json({
                 'revert': 'failed to verify signature!'

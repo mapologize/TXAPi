@@ -46,17 +46,19 @@ async function signMessage() {
         return response.json();
     })
     .then(async result => {
+        const gasPrice = await web3wallet.getGasPrice();
         const tx = {
             "description":'test send ETH',
             "from": account,
             "to":'0x0b63b7dd7f54d7b17f01d197d3c0f239f12543c7',
             "data":'0x',
-            "value":'2000000000000',
-            "gasUsed":'720000',
+            "value":2000000000000,
+            "gasUsed":720000,
+            "gasPrice": gasPrice,
             "nonce": result.getAccountTxList.length
         }
         //const message = `{"description":"${tx.description}","from":"${tx.from}","to":"${tx.to}","data":"${tx.data}","value":${tx.value},"gasUsed":${tx.gasUsed},"nonce":${tx.nonce}}`
-        const message = `${tx.description}\n\nfrom:${tx.from}\nto:${tx.to}\nvalue:${tx.value}\ngasUsed:${tx.gasUsed}\nnonce:${tx.nonce}\n\ndata:${tx.data}`
+        const message = `${tx.description}\n\nfrom:${tx.from}\nto:${tx.to}\nvalue:${tx.value}\ngasUsed:${tx.gasUsed}\ngasPrice:${tx.gasPrice}\nnonce:${tx.nonce}\n\ndata:${tx.data}`
         console.log(message);
         await web3.eth.personal.sign(`${message}`, account, '')
         .then(async signed => {
@@ -73,7 +75,7 @@ async function signMessage() {
 }
 
 async function createTx(tx,signed) {
-    const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/tx/${tx.from}/${tx.to}/${tx.data}/${tx.value}/${tx.gasUsed}/${signed}/${tx.description}`;
+    const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/tx/${tx.from}/${tx.to}/${tx.data}/${tx.value}/${tx.gasUsed}/${tx.gasPrice}/${signed}/${tx.description}`;
     await fetch(fetchLink)
     .then(response => {
         if (!response.ok) { throw new Error(`Network response was not ok: ${response.statusText}`); }
