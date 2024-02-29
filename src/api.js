@@ -62,24 +62,19 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             }; 
-            const signPromise = thirdweb.eth.accounts.signTransaction(txObject, privateKey);
-            await signPromise.then((signedTx) => {
+            const signPromise = await thirdweb.eth.accounts.signTransaction(txObject, privateKey);
+            res.json({
+                'signPromise': signPromise
+            });
+            /*await signPromise.then((signedTx) => {
                 const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
                 sentTx.on("receipt", receipt => {
-                        res.json({
-                            'receipt': receipt
-                        });
-                    });
-                    sentTx.on("error", err => {
-                        res.json({
-                            'error on sending': err
-                        });
-                    });
-                }).catch((err) => {
-                    res.json({
-                        'error on catch': err
-                    });
+                    res.json({'receipt': receipt});
                 });
+                sentTx.on("error", err => {
+                    res.json({'error on sending': err});
+                });
+            }).catch((err) => { res.json({'error on catch': err}); });*/
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
