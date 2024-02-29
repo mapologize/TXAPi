@@ -63,17 +63,16 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             };
             const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
-            await signPromise.then((signedTx) => {
-                res.json('TxHash test success');
-                /*const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
-                sentTx.on("receipt", receipt => {
-                    res.json({'TxHash Success': receipt});
-                });
-                sentTx.on("error", error => {
-                    res.json({'TxHash Error': error});
-                });*/
-            }).catch((error) => {
-                res.json({'TxHash Crash': error});
+
+            signPromise
+            .then((signedTx) => {
+                return thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction);
+            })
+            .then((receipt) => {
+                res.json({'TxHash Success': receipt});
+            })
+            .catch((error) => {
+                res.json({'TxHash Error': error});
             });
         }else{
             res.json({
