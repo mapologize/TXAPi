@@ -49,7 +49,8 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
     if(gasConsume>0){
         const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
         const nonce = Number(getAccountInfo[1].length);
-        const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
+        //const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
+        const message = `Send Transaction\n\n${description}\n\nfrom=${from}\nto=${to}\nvalue=${value}\ngasUsed=${gasUsed}\nnonce=${nonce}\n\ndata=${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         res.json({
             'description': description,
