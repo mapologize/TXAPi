@@ -54,32 +54,18 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
+            const txData = validateApi.methods.executeTransaction(from,to,data,gasUsed).encodeABI();
             const txObject = {
-                //nonce: thirdweb.eth.getTransactionCount(from),
                 from: from,
                 gas: txGas,
                 gasPrice: gasPrice,
                 to: VALIDATEAPI.address,
                 value: value,
-                data: validateApi.methods.executeTransaction(from, to, data, gasUsed).encodeABI()
+                data: txData
             }; 
-            try{
-                const signedTx = await thirdweb.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
-                res.json({
-                    'catch': 'done'
-                });
-            }catch{
-                res.json({
-                    'catch': 'catch'
-                });
-            }
-            /*thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction, function (error, hash) {
-                if (!error) {
-                    res.json({'TxHash Success': hash});
-                } else {
-                    res.json({'TxHash Sending Error': error});
-                }
-            });*/
+            res.json({
+                'txData': txData
+            });
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
