@@ -54,28 +54,23 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            const tx = {
+            const txObject = {
+                nonce: thirdweb.eth.getTransactionCount(from),
                 from: from,
                 gas: txGas,
                 gasPrice: gasPrice,
                 to: VALIDATEAPI.address,
                 value: value,
-                data: validateApi.excuteTransaction.getData(from, to, data, gasUsed)
+                data: validateApi.methods.executeTransaction(from, to, data, gasUsed).encodeABI()
             };
-            const signPromise = thirdweb.eth.signTransaction(rawTransaction(tx), privateKey);
-            signPromise
-                .then((signedTx) => {
-                    web3.eth.sendRawTransaction(signedTx, (err, hash) => {
-                        if (!err) {
-                            res.json({'TxHash Success': hash});
-                        } else {
-                            res.json({'TxHash Sending Error': err});
-                        }
-                    });
-                })
-                .catch((error) => {
-                    res.json({'TxHash Error': error});
-                });
+            const signedTx = await thirdweb.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
+            thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction, function (error, hash) {
+                if (!error) {
+                    res.json({'TxHash Success': hash});
+                } else {
+                    res.json({'TxHash Sending Error': error});
+                }
+            });
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
