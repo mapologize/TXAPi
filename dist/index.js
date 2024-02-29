@@ -76,6 +76,7 @@ async function signMessage() {
 
 async function createTx(tx,signed) {
     const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/tx/${tx.from}/${tx.to}/${tx.data}/${tx.value}/${tx.gasUsed}/${tx.gasPrice}/${signed}/${tx.description}`;
+    console.log(fetchLink);
     await fetch(fetchLink)
     .then(response => {
         if (!response.ok) { throw new Error(`Network response was not ok: ${response.statusText}`); }
