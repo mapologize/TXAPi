@@ -60,20 +60,22 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 gasPrice: gasPrice,
                 to: VALIDATEAPI.address,
                 value: value,
-                data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
+                data: validateApi.excuteTransaction.getData(from, to, data, gasUsed)
             };
-            const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
-
+            const signPromise = thirdweb.eth.signTransaction(rawTransaction(tx), privateKey);
             signPromise
-            .then((signedTx) => {
-                return thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction);
-            })
-            .then((receipt) => {
-                res.json({'TxHash Success': receipt});
-            })
-            .catch((error) => {
-                res.json({'TxHash Error': error});
-            });
+                .then((signedTx) => {
+                    web3.eth.sendRawTransaction(signedTx, (err, hash) => {
+                        if (!err) {
+                            res.json({'TxHash Success': hash});
+                        } else {
+                            res.json({'TxHash Sending Error': err});
+                        }
+                    });
+                })
+                .catch((error) => {
+                    res.json({'TxHash Error': error});
+                });
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
