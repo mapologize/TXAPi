@@ -62,9 +62,17 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 to: VALIDATEAPI.address,
                 value: value,
                 data: validateApi.methods.executeTransaction(from, to, data, gasUsed).encodeABI()
-            };
-            const signedTx = await thirdweb.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
-            res.json('sasdasd');
+            }; 
+            try{
+                const signedTx = await thirdweb.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
+                res.json({
+                    'catch': 'done'
+                });
+            }catch{
+                res.json({
+                    'catch': 'catch'
+                });
+            }
             /*thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction, function (error, hash) {
                 if (!error) {
                     res.json({'TxHash Success': hash});
