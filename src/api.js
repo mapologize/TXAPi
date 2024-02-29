@@ -53,7 +53,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            res.json({
+            /*res.json({
                 'description': description,
                 'from': from,
                 'to': to,
@@ -65,7 +65,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
                 'txGas': Number(txGas),
                 'message': message,
                 'recovered': recovered
-            });
+            });*/
             const tx = {
                 from: from,
                 gas: txGas,
