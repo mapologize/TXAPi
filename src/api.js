@@ -55,7 +55,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
             const txObject = {
-                nonce: thirdweb.eth.getTransactionCount(from),
+                //nonce: thirdweb.eth.getTransactionCount(from),
                 from: from,
                 gas: txGas,
                 gasPrice: gasPrice,
