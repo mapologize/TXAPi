@@ -62,7 +62,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             }; 
-            const signedTx = await web3.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
+            const signedTx = await thirdweb.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
             res.json({
                 'txData': `${signedTx}`
             });
