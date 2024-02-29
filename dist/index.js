@@ -63,7 +63,9 @@ async function signMessage() {
         console.log(getEthSignedMessageHash);
         await web3.eth.personal.sign(`${getMessageHash}`, account, '')
         .then(async signed => {
+            const recovered = await web3.eth.accounts.recover(message,signed);
             console.log(signed);
+            console.log(recovered);
             await createTx(tx,signed);
         })
         .catch(error => {
