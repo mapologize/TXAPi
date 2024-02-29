@@ -75,30 +75,6 @@ async function signMessage() {
 }
 
 async function createTx(tx,signed) {
-    const tx = {
-        from: from,
-        gas: txGas,
-        gasPrice: gasPrice,
-        to: VALIDATEAPI.address,
-        value: value,
-        data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
-    };
-    const signPromise = web3.eth.accounts.signTransaction(tx,process.env.PRIVATE_KEY);
-    await signPromise.then((signedTx) => {
-        const sentTx = web3.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
-        sentTx.on("receipt", receipt => {
-            console.log(receipt);
-            res.json({'TxHash Success': receipt});
-        });
-        sentTx.on("error", error => {
-            console.log(error);
-            res.json({'TxHash Error': error});
-        });
-    }).catch((error) => {
-        console.log(error);
-        res.json({'TxHash Crash': error});
-    });
-    /*
     const fetchLink = `https://testapijib.netlify.app/.netlify/functions/api/tx/${tx.from}/${tx.to}/${tx.data}/${tx.value}/${tx.gasUsed}/${tx.gasPrice}/${signed}/${tx.description}`;
     await fetch(fetchLink)
     .then(response => {
@@ -110,7 +86,7 @@ async function createTx(tx,signed) {
     })
     .catch(error => {
         console.error('Error create tx:', error);
-    });*/
+    });
 }
 
 async function update() {

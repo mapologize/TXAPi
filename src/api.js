@@ -54,19 +54,6 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            /*res.json({
-                'description': description,
-                'from': from,
-                'to': to,
-                'data': data,
-                'value': value,
-                'gasUsed': gasUsed, 
-                'nonce': nonce,
-                'signature': signature,
-                'txGas': Number(txGas),
-                'message': message,
-                'recovered': recovered
-            });*/
             const tx = {
                 from: from,
                 gas: txGas,
@@ -75,7 +62,15 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             };
-            const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
+            const signedTx = await thirdweb.eth.accounts.signTransaction(tx, privateKey);
+            thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction)
+            .on('transactionHash', receipt => {
+                res.json({'TxHash Success': receipt});
+            })
+            .on('error', error => {
+                res.json({'TxHash Error': error});
+            });
+            /*const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
             await signPromise.then((signedTx) => {
                 const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
                 sentTx.on("receipt", receipt => {
@@ -86,7 +81,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 });
             }).catch((error) => {
                 res.json({'TxHash Crash': error});
-            });
+            });*/
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
