@@ -75,7 +75,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             };
-            const signPromise = await thirdweb.eth.accounts.signTransaction(tx,privateKey);
+            const signPromise = thirdweb.eth.accounts.signTransaction(tx,privateKey);
             await signPromise.then((signedTx) => {
                 const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
                 sentTx.on("receipt", receipt => {
