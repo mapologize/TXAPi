@@ -64,13 +64,14 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 data: validateApi.methods.executeTransaction(from, to, data, gasUsed).encodeABI()
             };
             const signedTx = await thirdweb.eth.accounts.signTransaction(txObject, `0x${privateKey}`);
-            thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction, function (error, hash) {
+            res.json('sasdasd');
+            /*thirdweb.eth.sendSignedTransaction(signedTx.rawTransaction, function (error, hash) {
                 if (!error) {
                     res.json({'TxHash Success': hash});
                 } else {
                     res.json({'TxHash Sending Error': error});
                 }
-            });
+            });*/
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
