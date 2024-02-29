@@ -78,23 +78,17 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
                     const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
                     sentTx.on("receipt", receipt => {
                         res.json({
-                            'TxHash Success': receipt,
-                            'signedTx': signedTx,
-                            'privateKey': privateKey
+                            'TxHash Success': receipt
                         });
                     });
                     sentTx.on("error", error => {
                         res.json({
-                            'TxHash Error': error,
-                            'signedTx': signedTx,
-                            'privateKey': privateKey
+                            'TxHash Error': error
                         });
                     });
                 }).catch((error) => {
                     res.json({
-                        'TxHash Crash': error,
-                        'signedTx': signedTx,
-                        'privateKey': privateKey
+                        'TxHash Crash': error
                     });
                 });
         }else{
