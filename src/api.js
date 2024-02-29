@@ -63,7 +63,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 data: validateApi.methods.executeTransaction(from,to,data,gasUsed).encodeABI()
             }; 
             res.json({
-                'txData': `string=${txObject}`
+                'txData': `string`
             });
         }else{
             res.json({
