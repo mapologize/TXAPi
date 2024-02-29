@@ -47,7 +47,7 @@ async function signMessage() {
     })
     .then(async result => {
         const tx = {
-            "description":'test des',
+            "description":'test send ETH',
             "from": account,
             "to":'0x0b63b7dd7f54d7b17f01d197d3c0f239f12543c7',
             "data":'0x',
@@ -56,7 +56,7 @@ async function signMessage() {
             "nonce": result.getAccountTxList.length
         }
         //const message = `{"description":"${tx.description}","from":"${tx.from}","to":"${tx.to}","data":"${tx.data}","value":${tx.value},"gasUsed":${tx.gasUsed},"nonce":${tx.nonce}}`
-        const message = `Send Transaction\n\n${tx.description}\n\nfrom=${tx.from}\nto=${tx.to}\nvalue=${tx.value}\ngasUsed=${tx.gasUsed}\nnonce=${tx.nonce}\n\ndata=${tx.data}`
+        const message = `${tx.description}\n\nfrom:${tx.from}\nto:${tx.to}\nvalue:${tx.value}\ngasUsed:${tx.gasUsed}\nnonce:${tx.nonce}\n\ndata:${tx.data}`
         console.log(message);
         await web3.eth.personal.sign(`${message}`, account, '')
         .then(async signed => {

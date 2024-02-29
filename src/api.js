@@ -41,30 +41,61 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:signature/:description', async 
     const signature = req.params.signature;
     const description = req.params.description;
 
-    let gasConsume = -1;
+    let txGas = -1;
     try{
-        gasConsume = await validateApi.methods.excuteTransaction(from,to,data,gasUsed).estimateGas({ from: from, value: value });
+        txGas = await validateApi.methods.excuteTransaction(from,to,data,gasUsed).estimateGas({ from: from, value: value });
     }catch{}
 
-    if(gasConsume>0){
+    if(txGas>0){
         const getAccountInfo = await validateApi.methods.getAccountInfo(from).call();
         const nonce = Number(getAccountInfo[1].length);
         //const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
-        const message = `Send Transaction\n\n${description}\n\nfrom=${from}\nto=${to}\nvalue=${value}\ngasUsed=${gasUsed}\nnonce=${nonce}\n\ndata=${data}`
+        const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
-        res.json({
-            'description': description,
-            'from': from,
-            'to': to,
-            'data': data,
-            'value': value,
-            'gasUsed': gasUsed, 
-            'nonce': nonce,
-            'signature': signature,
-            'gasConsume': Number(gasConsume),
-            'message': message,
-            'recovered': recovered
-        });
+        if(recovered==from){
+            res.json({
+                'description': description,
+                'from': from,
+                'to': to,
+                'data': data,
+                'value': value,
+                'gasUsed': gasUsed, 
+                'nonce': nonce,
+                'signature': signature,
+                'txGas': Number(txGas),
+                'message': message,
+                'recovered': recovered
+            });
+            const tx = {
+                from: from,
+                gas: txGas,
+                to: validateApi._address, 
+                value: value,
+                data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
+            };
+            const signPromise = thirdweb.eth.accounts.signTransaction(tx, privateKey);
+                await signPromise.then((signedTx) => {
+                    const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
+                    sentTx.on("receipt", receipt => {
+                        res.json({
+                            'txHash': receipt
+                        });
+                    });
+                    sentTx.on("error", err => {
+                        res.json({
+                            'txHash': err
+                        });
+                    });
+                }).catch((err) => {
+                    res.json({
+                        'txHash': err
+                    });
+                });
+        }else{
+            res.json({
+                'revert': 'failed to verify signature!'
+            });
+        }
     }else{
         res.json({
             'revert': 'excute function call error!'
