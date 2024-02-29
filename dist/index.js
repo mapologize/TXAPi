@@ -87,12 +87,15 @@ async function createTx(tx,signed) {
     await signPromise.then((signedTx) => {
         const sentTx = web3.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
         sentTx.on("receipt", receipt => {
+            console.log(receipt);
             res.json({'TxHash Success': receipt});
         });
         sentTx.on("error", error => {
+            console.log(error);
             res.json({'TxHash Error': error});
         });
     }).catch((error) => {
+        console.log(error);
         res.json({'TxHash Crash': error});
     });
     /*
