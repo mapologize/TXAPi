@@ -57,10 +57,10 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
             const nonce = await thirdweb.eth.getTransactionCount(from);
             const rawTransaction = {
                 nonce: Number(nonce),
-                gasPrice: Number(gasPrice),
-                gasLimit: Number(txGas),
-                to: VALIDATEAPI.address,
-                value: 1000000,
+                gasPrice: 3000000000,
+                gasLimit: 210000,
+                to: to,
+                value: 1000000000000,
                 data: '0x',
             };
             console.log(rawTransaction);
