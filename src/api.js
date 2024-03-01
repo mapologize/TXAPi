@@ -54,10 +54,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            //const nonce = thirdweb.eth.getTransactionCount(from);
-            //console.log(nonce);
             const rawTransaction = {
-                //nonce: Number(nonce),
                 gasPrice: 3000000000,
                 gasLimit: 210000,
                 to: to,
@@ -66,11 +63,11 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
             };
             console.log(rawTransaction);
             const signedTransaction = await thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
-            console.log("signedTransaction");
-            const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
-            console.log("receipt");
+            console.log(signedTransaction);
+            /*const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+            console.log("receipt");*/
             res.json({
-                'receipt': receipt
+                'receipt': signedTransaction
             });
         }else{
             res.json({
