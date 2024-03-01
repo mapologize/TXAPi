@@ -70,7 +70,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             }, privateKey);*/
-            console.log(signPromise);
+            console.log(txObject);
             res.json({
                 'signPromise': 'comfirm'
             });
