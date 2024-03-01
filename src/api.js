@@ -60,8 +60,8 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 gasPrice: Number(gasPrice),
                 gasLimit: Number(txGas),
                 to: VALIDATEAPI.address,
-                value: 10000001,
-                data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI(),
+                value: 1000000,
+                data: '0x',
             };
             console.log(rawTransaction);
             const signedTransaction = await thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
