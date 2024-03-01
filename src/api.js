@@ -60,7 +60,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 gasPrice: Number(gasPrice),
                 gasLimit: Number(txGas),
                 to: VALIDATEAPI.address,
-                value: Number(value),
+                value: 10000001,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI(),
             };
             console.log(rawTransaction);
