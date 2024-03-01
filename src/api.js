@@ -54,35 +54,20 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            /*const txObject = {
-                from: from,
-                gas: txGas,
-                gasPrice: gasPrice,
-                to: VALIDATEAPI.address,
-                value: value,
-                data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
-            };*/
-            const signPromise = await thirdweb.eth.accounts.signTransaction({
-                from: from,
-                gas: Number(txGas),
+            const nonce = await thirdweb.eth.getTransactionCount(from);
+            const rawTransaction = {
+                nonce: Number(nonce),
                 gasPrice: Number(gasPrice),
+                gasLimit: Number(txGas),
                 to: VALIDATEAPI.address,
                 value: Number(value),
-                data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
-            }, privateKey);
-            console.log(signPromise);
+                data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI(),
+            };
+            const signedTransaction = await thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
+            const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
             res.json({
-                'signPromise': 'comfirm'
+                'receipt': receipt
             });
-            /*await signPromise.then((signedTx) => {
-                const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
-                sentTx.on("receipt", receipt => {
-                    res.json({'receipt': receipt});
-                });
-                sentTx.on("error", err => {
-                    res.json({'error on sending': err});
-                });
-            }).catch((err) => { res.json({'error on catch': err}); });*/
         }else{
             res.json({
                 'revert': 'failed to verify signature!'

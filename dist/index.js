@@ -93,3 +93,30 @@ async function createTx(tx,signed) {
 async function update() {
     console.log("updated!");
 }
+
+async function test() {
+    const privateKey = 'f5510b5b97fe173bf9e56128e1ff2630e086349f355d7cdc5b3aaf69f1459960';
+    const fromAddress = '0x0B63b7Dd7F54D7b17F01D197D3C0f239F12543c7';
+    const toAddress = '0x0B63b7Dd7F54D7b17F01D197D3C0f239F12543c7';
+    
+    const nonce = await web3.eth.getTransactionCount(fromAddress);
+    // Construct the raw transaction data
+    const rawTransaction = {
+        nonce: Number(nonce),
+        gasPrice: 3000000000,
+        gasLimit: 210000,
+        to: toAddress,
+        value: 1000000000000,
+        data: '0x', // If you have contract data, include it here
+    };
+
+    console.log(rawTransaction);
+    
+    // Sign the transaction
+    const signedTransaction = await web3.eth.accounts.signTransaction(rawTransaction, privateKey);
+    
+    // Send the signed transaction
+    const receipt = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+    
+    console.log('Transaction receipt:', receipt);
+}
