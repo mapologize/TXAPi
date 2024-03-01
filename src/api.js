@@ -62,8 +62,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 data: '0x',
             };
             console.log(rawTransaction);
-            const signedTransaction = await thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
-            console.log(signedTransaction);
+            const signedTransaction = thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey).then(console.log)
             /*const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
             console.log("receipt");*/
             res.json({
