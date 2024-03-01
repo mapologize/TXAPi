@@ -54,7 +54,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            const nonce = await thirdweb.eth.getTransactionCount(from);
+            const nonce = await web3.eth.getTransactionCount(from);
             console.log(nonce);
             /*const rawTransaction = {
                 //nonce: Number(nonce),
