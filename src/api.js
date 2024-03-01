@@ -55,18 +55,18 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
             const rawTransaction = {
-                gasPrice: 3000000000,
-                gasLimit: 210000,
-                to: to,
-                value: 1000000000000,
+                gasPrice: gasPrice,
+                gasLimit: txGas,
+                to: VALIDATEAPI.address,
+                value: value,
                 data: '0x',
             };
             console.log(rawTransaction);
-            const signedTransaction = thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey).then(console.log)
+            const signedTransaction = thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
             /*const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
             console.log("receipt");*/
             res.json({
-                'receipt': signedTransaction
+                'receipt': 'signedTransaction'
             });
         }else{
             res.json({
