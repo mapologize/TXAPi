@@ -54,23 +54,23 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
         const recovered = thirdweb.eth.accounts.recover(message,signature);
         if(recovered==from){
-            const txObject = {
+            /*const txObject = {
                 from: from,
                 gas: txGas,
                 gasPrice: gasPrice,
                 to: VALIDATEAPI.address,
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
-            }; 
-            /*const signPromise = await thirdweb.eth.accounts.signTransaction({
+            };*/
+            const signPromise = await thirdweb.eth.accounts.signTransaction({
                 from: from,
-                gas: txGas,
-                gasPrice: gasPrice,
+                gas: Number(txGas),
+                gasPrice: Number(gasPrice),
                 to: VALIDATEAPI.address,
-                value: value,
+                value: Number(value),
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
-            }, privateKey);*/
-            console.log(txObject);
+            }, privateKey);
+            console.log(signPromise);
             res.json({
                 'signPromise': 'comfirm'
             });
