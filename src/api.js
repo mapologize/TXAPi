@@ -62,17 +62,17 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
             }; 
-            const signPromise = await thirdweb.eth.accounts.signTransaction({
+            /*const signPromise = await thirdweb.eth.accounts.signTransaction({
                 from: from,
                 gas: txGas,
                 gasPrice: gasPrice,
                 to: VALIDATEAPI.address,
                 value: value,
                 data: validateApi.methods.excuteTransaction(from,to,data,gasUsed).encodeABI()
-            }, privateKey);
+            }, privateKey);*/
             console.log(signPromise);
             res.json({
-                'signPromise': 'signPromise'
+                'signPromise': 'comfirm'
             });
             /*await signPromise.then((signedTx) => {
                 const sentTx = thirdweb.eth.sendSignedTransaction(signedTx.raw || signedTx.rawTransaction);
