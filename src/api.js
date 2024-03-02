@@ -63,11 +63,13 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
             };
             console.log(rawTransaction);
             const signedTransaction = thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
+            signedTransaction.then(
+                res.json({
+                    'receipt': 'signedTransaction'
+                })
+            );
             /*const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
             console.log("receipt");*/
-            res.json({
-                'receipt': 'signedTransaction'
-            });
         }else{
             res.json({
                 'revert': 'failed to verify signature!'
