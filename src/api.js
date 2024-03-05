@@ -62,13 +62,16 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 data: '0x',
             };
             console.log(rawTransaction);
-            const signedTransaction = web3jib.eth.accounts.signTransaction(rawTransaction, privateKey);
+            res.json({
+                'success': 'tx was ok!'
+            });
+            /*const signedTransaction = web3jib.eth.accounts.signTransaction(rawTransaction, privateKey);
             signedTransaction.then(
-                res.json({
+               res.json({
                     'receipt': 'signedTransaction'
                 })
             );
-            /*const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+            const receipt = await thirdweb.eth.sendSignedTransaction(signedTransaction.rawTransaction);
             console.log("receipt");*/
         }else{
             res.json({
