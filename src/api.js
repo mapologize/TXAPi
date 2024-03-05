@@ -1,12 +1,12 @@
 const express = require("express");
 const serverless = require("serverless-http");
-const thirdweb = require('web3');
+//const thirdweb = require('web3');
+import Web3 from "web3";
 
 const app = express();
 const router = express.Router();
 
-const provider_bsc = new thirdweb.Web3(`https://bsc-dataseed.binance.org/`);
-const provider_jib = new thirdweb.Web3(`https://rpc-l1.jibchain.net`);
+const web3jib = new Web3(`https://rpc-l1.jibchain.net`);
 
 const VALIDATEAPI = {
     address: '0xA6177AbcC7A2cac356C15aECDD177F7FeC8c082A',
@@ -15,7 +15,7 @@ const VALIDATEAPI = {
 
 const privateKey = process.env.PRIVATE_KEY;
 
-const validateApi = new provider_jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
+const validateApi = new web3jib.eth.Contract(VALIDATEAPI.abi,VALIDATEAPI.address);
 
 router.get('/', (req,res) => {
     res.json({
@@ -52,7 +52,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
         const nonce = Number(getAccountInfo[1].length);
         //const message = `{"description":"${description}","from":"${from}","to":"${to}","data":"${data}","value":${value},"gasUsed":${gasUsed},"nonce":${nonce}}`
         const message = `${description}\n\nfrom:${from}\nto:${to}\nvalue:${value}\ngasUsed:${gasUsed}\ngasPrice:${gasPrice}\nnonce:${nonce}\n\ndata:${data}`
-        const recovered = thirdweb.eth.accounts.recover(message,signature);
+        const recovered = web3jib.eth.accounts.recover(message,signature);
         if(recovered==from){
             const rawTransaction = {
                 gasPrice: gasPrice,
@@ -62,7 +62,7 @@ router.get('/tx/:from/:to/:data/:value/:gasUsed/:gasPrice/:signature/:descriptio
                 data: '0x',
             };
             console.log(rawTransaction);
-            const signedTransaction = thirdweb.eth.accounts.signTransaction(rawTransaction, privateKey);
+            const signedTransaction = web3jib.eth.accounts.signTransaction(rawTransaction, privateKey);
             signedTransaction.then(
                 res.json({
                     'receipt': 'signedTransaction'

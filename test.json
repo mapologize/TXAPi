@@ -1,7 +1,0 @@
-{
-    "from":"0x0B63b7Dd7F54D7b17F01D197D3C0f239F12543c7",
-    "currentGasUsed":0,
-    "currentNonce":0,
-    "message":"Account=0x0B63b7Dd7F54D7b17F01D197D3C0f239F12543c7 Nonce=0",
-    "getMessageHash":"0x33a5ed48ad2d3d1917312dac10d264cf1cb77a9fe40fcab61e233581d9ce66f5"
-}
